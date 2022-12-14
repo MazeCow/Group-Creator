@@ -3,6 +3,7 @@ from rich.panel import Panel
 from rich import box
 import random
 
+
 console = Console()
 
 #Write title
@@ -24,7 +25,8 @@ def get_people():
 		elif personinput != "":
 			people.append(personinput)
 		else:
-			console.print("Invalid Input", style="bold italic red")
+			console.print("\tInvalid Input", style="bold italic red")
+			continue
 		people_count += 1
 	print(people)
 	return people
@@ -84,7 +86,7 @@ def get_groups_amount(people):
 				groups = int(console.input("[slate_blue3]>: "))
 				valid_choice2 = True
 			except:
-				console.print("Invalid Input!", style="bold italic red")
+				console.print("\tInvalid Input!", style="bold italic red")
 		if groups <= 0:
 			console.print("You can't have less than one group!", style="bold italic red")
 		else:
@@ -99,8 +101,8 @@ def generate_group(groups_amount, people_per_group, people, sort_type):
 	if sort_type == "group":
 		groups_amount = groups_amount(people)
 		people_amount = len(people)
-		remainer = int(people_amount % groups_amount)
-		people_per_group = int(people_amount - remainer) / groups_amount
+		remainer = int(round(people_amount % groups_amount))
+		people_per_group = int(round(people_amount - remainer)) / groups_amount
 		groups = {}
 		for group in range(0, groups_amount-1):
 			random_people = random.choices(people, k = people_per_group)
@@ -132,21 +134,23 @@ def generate_group(groups_amount, people_per_group, people, sort_type):
 					valid_choice = False
 					console.print("Invalid Input.", style="bold italic red")
 		return groups
-	elif sort_type == "person":
+	elif sort_type == "people":
 		people_per_group = people_per_group(people)
 		people_amount = len(people)
 		remainer = people_amount % people_per_group
+		groupsfix = int(round((people_amount - remainer) / people_per_group))
 		groups = {}
-		for group in range(0, len(groups)-1):
-			random_people = random.choices(people, k = people_per_group)
-			groups.add(f"{group}", random_people)
+		for group in range(0, groupsfix):
+			random_people = random.choices(people, k=people_per_group)
+			groups[f"{group}"] = random_people
 			for person in random_people:
+				print(type(person), "-" + person)
 				people.remove(person)
 
 		if remainer:
 			console.print(f"\n[slate_blue3]There are {remainer} people that could not fit evenly into a group.[/]")
 			console.print("[slate_blue3]What would you like to do?[/]")
-			console.print("[sky_blue3][purple4][[white]1.[/]][/] Distribute the extra people evenly across the groups\n\t[purple4][[white]2.[/]][/] Put the remaining people into a seperate group\n[/]")
+			console.print("[sky_blue3][purple4][[white]1.[/]][/] Distribute the extra people evenly across the groups\n[purple4][[white]2.[/]][/] Put the remaining people into a seperate group\n[/]")
 			choices_for_1 = ["1", "1.", "[1.]", "one"]
 			choices_for_2 = ["2", "2.", "[2.]", "two"]
 			valid_choice = False
@@ -162,14 +166,19 @@ def generate_group(groups_amount, people_per_group, people, sort_type):
 						people.remove(people[0])
 						cycle += 1
 				elif choice in choices_for_2:
-					groups.add(f"{len(groups)}", people)
+					groups[f"{len(groups)}"].append(people) 
 				else:
 					valid_choice = False
 					console.print("Invalid Input.", style="bold italic red")
-			return groups
+		return groups
 
 groups = generate_group(get_groups_amount, get_people_per_group, people, sort_type)
-print(groups)
+print(groups, "- Error - What the?")
+
+test={}
+test["2"] = "two"
+print(len(test))
+print(test)
 
 
 
