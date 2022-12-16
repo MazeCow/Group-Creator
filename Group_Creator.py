@@ -4,11 +4,12 @@ from rich import box
 import random
 from rich.layout import Layout
 from rich import print
+import os
 
 console = Console()
 
 #Write title
-console.print(Panel.fit("                [bold purple4]Group[/] [slate_blue3]Creator[/] [sky_blue3][white]V1[/][/]                ", subtitle="[white]by[/] [slate_blue3]Isaac [/][purple4]Trost[/]", box=box.ROUNDED, style="sky_blue3")," ")
+console.print(Panel.fit("                [bold purple4]Gsdfffp[/] [slate_blue3]Creator[/] [sky_blue3][white]V1[/][/]                ", subtitle="[white]by[/] [slate_blue3]Isaac [/][purple4]Trost[/]", box=box.ROUNDED, style="sky_blue3")," ")
 #<---------------->
 def get_people():
 	people = []
@@ -169,7 +170,8 @@ def generate_group(get_groups_amount, get_people_per_group, people, sort_type):
 groups = generate_group(get_groups_amount, get_people_per_group, people, sort_type)
 #<---------------->
 console.input(prompt="\n[slate_blue3]Press [bold white]ENTER[/] to continue[white]. . .[/]")
-console.clear()
+for i in range(0, 100):
+	console.print('\n')
 #<---------------->
 
 console.print("\n[slate_blue3]Generated Groups[white]:[/]\n")
